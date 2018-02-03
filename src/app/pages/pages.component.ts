@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-declare var init_plugins();
+declare var init_plugins;
 
 @Component({
   selector: 'app-pages',
