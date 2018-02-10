@@ -26,7 +26,7 @@
               <a routerLinkActive="active" routerLink="/account-settings">Account Setting</a>
             </li>
             <li>
-              <a routerLink="/login">Logout</a>
+              <a (click)="usuarioService.logout()" class="pointer">Logout</a>
             </li>
           </ul>
         </li>
