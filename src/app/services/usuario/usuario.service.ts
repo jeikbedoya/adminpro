@@ -4,10 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 
-import swal from 'sweetalert';
+import * as sweetalert from 'sweetalert';
 
 import 'rxjs/add/operator/map';
 import { Router } from '@angular/router';
+import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 
 @Injectable()
 export class UsuarioService {
@@ -18,7 +19,8 @@ export class UsuarioService {
 
   constructor(
     public http: HttpClient,
-    public router: Router
+    public router: Router,
+    public subirArchivoService: SubirArchivoService
   ) {
     this.cargarStorage();
   }
@@ -38,9 +40,24 @@ export class UsuarioService {
     const url = `${environment.URL_SERVICIOS}/usuario`;
     return this.http.post(url, usuario )
       .map( (res: any) => {
-        swal('Usuario creado', res.usuario.email, 'success');
+        sweetalert('Usuario creado', res.usuario.email, 'success');
         return res.usuario;
       });
+  }
+
+  actualizarUsuario( usuario: Usuario ) {
+
+    let url = `${environment.URL_SERVICIOS}/usuario/${usuario._id}`;
+    url += '?token=' + this.token;
+    return this.http.put(url, usuario)
+        .map( (res: any) => {
+          this.usuario = res.usuario;
+          const usuarioDB: Usuario = res.usuario;
+          this.guardarStorage( usuarioDB._id, this.token, usuarioDB);
+          sweetalert('Usuario actualizado', usuarioDB.nombre, 'success');
+          return true;
+        });
+
   }
 
   logout() {
@@ -86,8 +103,23 @@ export class UsuarioService {
     this.token = token;
   }
 
+
   estaLogueado() {
     return  this.token.length > 5 ? true : false ;
+  }
+
+  cambiarImagen( file: File, id: string ) {
+    this.subirArchivoService.subirArchivo( file, 'usuarios', id )
+      .then( (resp: any) => {
+        console.log(resp);
+        this.usuario.img = resp.usuario.img;
+        sweetalert('Imagen actualizada', this.usuario.nombre, 'success');
+
+        this.guardarStorage(id, this.token, this.usuario);
+      })
+      .catch( resp => {
+        console.log(resp);
+      });
   }
 
 }
