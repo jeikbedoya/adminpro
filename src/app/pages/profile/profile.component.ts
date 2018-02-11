@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import { Usuario } from '../../modelos/usuario.model';
-import * as swal from 'sweetalert';
+declare var  swal: any;
 
 @Component({
   selector: 'app-profile',

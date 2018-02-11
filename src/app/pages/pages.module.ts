@@ -20,6 +20,8 @@ import { PromesasComponent } from './promesas/promesas.component';
 
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ChartsModule } from 'ng2-charts';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { ChartsModule } from 'ng2-charts';
         AccountSettingsComponent,
         PromesasComponent,
         RxjsComponent,
-        ProfileComponent
+        ProfileComponent,
+        UsuariosComponent,
+        ModalUploadComponent
     ],
     exports: [
         PagesComponent,
