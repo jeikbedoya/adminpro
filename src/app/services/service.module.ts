@@ -13,6 +13,7 @@ import {
   SubirArchivoService,
   HospitalService,
   MedicoService,
+  AdminGuard
 } from './service.index';
 
 @NgModule({
@@ -26,11 +27,12 @@ import {
     SettingsService,
     SidebarService,
     UsuarioService,
-    LoginguardGuard,
     SubirArchivoService,
     ModalUploadService,
     HospitalService,
-    MedicoService
+    MedicoService,
+    LoginguardGuard,
+    AdminGuard
   ]
 })
 export class ServiceModule { }
