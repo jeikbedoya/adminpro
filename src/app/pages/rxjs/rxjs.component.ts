@@ -15,14 +15,14 @@ export class RxjsComponent implements OnInit, OnDestroy {
 
   constructor() {
 
-   this.subscription = this.regresaObservable()
+    this.subscription = this.regresaObservable()
       .subscribe(
-       numero => console.log( 'Subs', numero),
-       error => console.log('Error en el obs ', error),
-       () => console.log('El observador termino!')
-    );
+        numero => console.log('Subs', numero),
+        error => console.log('Error en el obs ', error),
+        () => console.log('El observador termino!')
+      );
 
-   }
+  }
 
   ngOnInit() {
   }
@@ -33,24 +33,24 @@ export class RxjsComponent implements OnInit, OnDestroy {
 
 
   regresaObservable(): Observable<any> {
-    return  new Observable ( observer => {
+    return new Observable(observer => {
 
       let contador = 0;
 
-      const intervalo = setInterval( () => {
+      const intervalo = setInterval(() => {
 
         contador += 1;
 
-        let salida = {
+        const salida = {
           valor: contador,
         };
 
-        observer.next( salida );
+        observer.next(salida);
 
-       /*  if ( contador === 3 ) {
-          clearInterval(intervalo);
-          observer.complete();
-        } */
+        /*  if ( contador === 3 ) {
+           clearInterval(intervalo);
+           observer.complete();
+         } */
 
         /* if ( contador === 2 ) {
           observer.error('Error en el observer !');
@@ -59,21 +59,21 @@ export class RxjsComponent implements OnInit, OnDestroy {
       }, 500);
 
     })
-    .retry(2)
-    .map( (resp: any) => {
+      .retry(2)
+      .map((resp: any) => {
 
-      return resp.valor;
+        return resp.valor;
 
-    })
-    .filter((valor, index) => {
-      if ( valor % 2 === 1) {
+      })
+      .filter((valor, index) => {
+        if (valor % 2 === 1) {
           //impar
           return true;
-      }else{
-        //par
-        return false;
-      }
-    });
+        } else {
+          //par
+          return false;
+        }
+      });
 
   }
 

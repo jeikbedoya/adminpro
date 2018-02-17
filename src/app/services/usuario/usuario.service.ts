@@ -27,6 +27,23 @@ export class UsuarioService {
     this.cargarStorage();
   }
 
+  renuevaToken() {
+    let url = `${environment.URL_SERVICIOS}/login/renuevatoken`;
+    url += '?token=' + this.token;
+    return this.http.get(url)
+      .map((resp: any) => {
+        this.token = resp.token;
+        localStorage.setItem('token', this.token);
+        console.log('Token renovado');
+        return true;
+      })
+      .catch(err => {
+        this.logout();
+        swal('No se pudo renovar el token', 'no fue posible renovar el token', 'error');
+       return Observable.throw( err );
+      });
+  }
+
   cargarStorage() {
     if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
@@ -47,8 +64,8 @@ export class UsuarioService {
         swal('Usuario creado', res.usuario.email, 'success');
         return res.usuario;
       })
-      .catch( err => {
-        swal( err.error.mensaje, err.error.errors.message, 'error');
+      .catch(err => {
+        swal(err.error.mensaje, err.error.errors.message, 'error');
         return Observable.throw(err);
       });
 
@@ -68,8 +85,8 @@ export class UsuarioService {
         swal('Usuario actualizado', usuario.nombre, 'success');
         return true;
       })
-      .catch( err => {
-        swal( err.error.mensaje, err.error.errors.message, 'error');
+      .catch(err => {
+        swal(err.error.mensaje, err.error.errors.message, 'error');
         return Observable.throw(err);
       });
 
@@ -98,11 +115,11 @@ export class UsuarioService {
     const url = `${environment.URL_SERVICIOS}/login`;
     return this.http.post(url, usuario)
       .map((res: any) => {
-        this.guardarStorage(res.id, res.token, res.usuario,  res.menu);
+        this.guardarStorage(res.id, res.token, res.usuario, res.menu);
         return true;
       })
-      .catch( err => {
-        swal( 'Error en el login ', err.error.mensaje, 'error');
+      .catch(err => {
+        swal('Error en el login ', err.error.mensaje, 'error');
         return Observable.throw(err);
       });
   }
